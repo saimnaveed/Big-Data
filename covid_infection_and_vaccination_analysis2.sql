@@ -1,4 +1,4 @@
---Getting all contents from the CovidVaccination Table
+--Getting all contents from the CovidVaccination Table(SQL Server)
 
 --select *
 --from Analysis..CovidVaccinations
