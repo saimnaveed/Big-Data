@@ -19,8 +19,7 @@ All parts involved in this application are deployed on docker so that all of the
 
 ## Application Architecture Diagram
 
-![App Screenshot](https://drive.google.com/file/d/1KrRAE80AR9Qd3l5udaomXYUzf1tl3ujh/view?usp=drive_link/468x300?text=App+Screenshot+Here)
-
+!https://drive.google.com/file/d/1KrRAE80AR9Qd3l5udaomXYUzf1tl3ujh/view?usp=sharing/468x300?text=App+Screenshot+Here
 
 ## Tech Stack
 
@@ -46,7 +45,7 @@ Clone the project
 Go to the project directory
 
 ```cmd/powershell
-  cd < project directory name ..,>
+  cd < project directory name ...>
 ```
 
 Starting DOcker Compose Application
