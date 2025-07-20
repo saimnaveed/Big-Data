@@ -1,0 +1,14 @@
+apache-airflow== 2.5.1
+airflowctl==0.2.7
+typing_extensions
+tzdata
+urllib3
+httpx
+
+requests
+numpy
+pandas
+sqlalchemy
+psycopg2
+python-dotenv
+

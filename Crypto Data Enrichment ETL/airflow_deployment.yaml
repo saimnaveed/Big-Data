@@ -1,0 +1,92 @@
+services:
+  airflow_server:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow123
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+    networks:
+      - airflow_network
+
+  crypto_server:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: crypto_user
+      POSTGRES_PASSWORD: crypto_123
+      POSTGRES_DB: crypto_data
+    ports:
+      - "5431:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - airflow_network
+
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    image: airflow-webserver
+
+    restart: always
+    environment:
+      - AIRFLOW_HOME=/opt/airflow
+      - PYTHONPATH=${PYTHONPATH}:${AIRFLOW_HOME}
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow123@airflow_server/airflow
+      - AIRFLOW__API_SERVER__SECRET_KEY=mysecretkey
+      - AIRFLOW__CORE__FERNET_KEY=GgyJ5jUehSy2zQqY958eUWW1ezEgNp4OerBy-AKuD14=
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./config:/opt/airflow/config
+      - ./plugins:/opt/airflow/plugins
+    ports:
+      - "8080:8080"
+    entrypoint: /entrypoint.sh
+    command: webserver
+    depends_on:
+      - airflow_server
+      - crypto_server
+    networks:
+      - airflow_network
+
+  airflow-scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    image: airflow-scheduler
+    restart: always
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow123@airflow_server/airflow
+      - AIRFLOW__API_SERVER_SECRET_KEY=mysecretkey 
+      - AIRFLOW__CORE__FERNET_KEY=GgyJ5jUehSy2zQqY958eUWW1ezEgNp4OerBy-AKuD14=
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+    entrypoint: /entrypoint.sh
+    command: scheduler
+    depends_on:
+      - airflow_server
+      - crypto_server
+    networks:
+      - airflow_network
+  
+  web-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: serving-api
+    depends_on:
+      - crypto_server
+    ports:
+      - "8000:80"
+    networks:
+      - airflow_network
+
+networks:
+  airflow_network:
+    driver: bridge
+

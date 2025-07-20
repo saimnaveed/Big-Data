@@ -1,0 +1,31 @@
+FROM python:3.12
+
+USER root
+
+RUN apt-get update && apt-get install -y \
+      libpq-dev gcc \
+      && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+
+COPY requirements2.txt .
+
+RUN pip install --no-cache-dir -r requirements2.txt
+
+
+# Copy the requirements file
+# COPY requirements2.txt .
+
+# Install the dependencies from the requirements file
+# RUN pip install --upgrade pip \
+#       && pip install --no-cache-dir \
+#       -r requirements2.txt
+
+#configurations for api script
+# Copy application code
+
+COPY serving_app/ ./serving_app/
+
+#COPY ./serving_app /app  
+# Document the container’s listening port           
+EXPOSE 80                   
+CMD ["uvicorn", "serving_app.data_serving:crypto_app", "--host", "0.0.0.0", "--port", "80"]
