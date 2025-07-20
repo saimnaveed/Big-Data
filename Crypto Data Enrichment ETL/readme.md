@@ -19,7 +19,7 @@ All parts involved in this application are deployed on docker so that all of the
 
 ## Application Architecture Diagram
 
-!https://drive.google.com/file/d/1KrRAE80AR9Qd3l5udaomXYUzf1tl3ujh/view?usp=sharing/468x300?text=App+Screenshot+Here
+!https://drive.google.com/file/d/1KrRAE80AR9Qd3l5udaomXYUzf1tl3ujh/view?usp=sharing/view/468x300?text=App+Screenshot+Here
 
 ## Tech Stack
 
