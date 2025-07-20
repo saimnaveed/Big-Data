@@ -1,4 +1,4 @@
--- Getting all contents of Covid Vaccination Table
+-- Getting all contents of Covid Vaccination Table through (SQL Server)
 
 --Select *
 --From dbo.CovidVaccinations
